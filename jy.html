@@ -1,0 +1,655 @@
+html
+
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>池绛夫妇 | Our Universe</title>
+
+<style>
+
+  /* ═══ 全局重置 ═══ */
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior:smooth; }
+
+  body {
+
+    font-family: 'Georgia', 'Noto Serif SC', serif;
+
+    background:#0a0a0f;
+
+    color:#e8e0d4;
+
+    overflow-x:hidden;
+
+    line-height:1.8;
+
+  }
+
+  a { color:inherit; text-decoration:none; }
+
+  /* ═══ 固定导航栏 ═══ */
+
+  .navbar {
+
+    position:fixed; top:0; left:0; width:100%; z-index:1000;
+
+    display:flex; justify-content:space-between; align-items:center;
+
+    padding:0 48px; height:68px;
+
+    background:rgba(10,10,15,0.85);
+
+    backdrop-filter:blur(12px);
+
+    border-bottom:1px solid rgba(193,163,120,0.15);
+
+    transition:background 0.3s;
+
+  }
+
+  .nav-logo {
+
+    font-size:1.3rem; letter-spacing:4px; color:#c1a378;
+
+    font-weight:700;
+
+  }
+
+  .nav-links { display:flex; gap:36px; list-style:none; }
+
+  .nav-links li a {
+
+    font-size:0.85rem; letter-spacing:2px; text-transform:uppercase;
+
+    color:#a89b8c; transition:color 0.3s;
+
+    position:relative;
+
+  }
+
+  .nav-links li a::after {
+
+    content:''; position:absolute; bottom:-4px; left:0;
+
+    width:0; height:1px; background:#c1a378;
+
+    transition:width 0.3s;
+
+  }
+
+  .nav-links li a:hover { color:#c1a378; }
+
+  .nav-links li a:hover::after { width:100%; }
+
+  /* 汉堡菜单（仅手机） */
+
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+
+  .hamburger span {
+
+    width:24px; height:2px; background:#c1a378;
+
+    transition:all 0.3s;
+
+  }
+
+  /* ═══ 通用区块 ═══ */
+
+  section {
+
+    min-height:100vh; padding:120px 80px 80px;
+
+    display:flex; flex-direction:column; justify-content:center;
+
+  }
+
+  .section-title {
+
+    font-size:2.4rem; color:#c1a378; margin-bottom:12px;
+
+    letter-spacing:6px; font-weight:300;
+
+  }  .section-subtitle {
+
+    font-size:0.9rem; color:#7a6f63; letter-spacing:3px;
+
+    margin-bottom:48px;
+
+  }
+
+  .divider {
+
+    width:60px; height:1px; background:#c1a378;
+
+    margin:32px 0;
+
+  }
+
+  /* ═══ 首页 Hero ═══ */
+
+  #home {
+
+    position:relative; text-align:center;
+
+    align-items:center;
+
+    background:
+
+      radial-gradient(ellipse at 30% 50%, rgba(193,163,120,0.06) 0%, transparent 60%),
+
+      radial-gradient(ellipse at 70% 50%, rgba(120,140,180,0.04) 0%, transparent 60%),
+
+      #0a0a0f;
+
+  }
+
+  #home .hero-names {
+
+    font-size:3.6rem; letter-spacing:12px; color:#c1a378;
+
+    font-weight:300; margin-bottom:8px;
+
+  }
+
+  #home .hero-ampersand {
+
+    font-size:1.4rem; color:#5a4f43; margin:8px 0;
+
+    letter-spacing:8px;
+
+  }
+
+  #home .hero-date {
+
+    font-size:0.8rem; color:#5a4f43; letter-spacing:4px;
+
+    margin-top:24px;
+
+  }
+
+  #home .hero-quote {
+
+    max-width:520px; margin:40px auto 0;
+
+    font-size:0.95rem; color:#8a7e72; font-style:italic;
+
+    line-height:2;
+
+  }
+
+  /* ═══ 时间轴 ═══ */
+
+  #timeline { background:#0d0d12; }
+
+  .timeline-container {
+
+    position:relative; max-width:800px; margin:0 auto;
+
+    padding-left:40px;
+
+  }
+
+  .timeline-container::before {
+
+    content:''; position:absolute; left:8px; top:0;
+
+    width:1px; height:100%; background:rgba(193,163,120,0.2);
+
+  }
+
+  .tl-item {
+
+    position:relative; margin-bottom:56px;
+
+    padding-left:32px;
+
+  }
+
+  .tl-item::before {
+
+    content:''; position:absolute; left:-4px; top:8px;
+
+    width:9px; height:9px; border-radius:50%;
+
+    background:#c1a378; box-shadow:0 0 12px rgba(193,163,120,0.4);
+
+  }
+
+  .tl-date {
+
+    font-size:0.75rem; color:#c1a378; letter-spacing:3px;
+
+    margin-bottom:6px;
+
+  }
+
+  .tl-text {
+
+    font-size:0.9rem; color:#a89b8c; line-height:1.9;
+
+  }
+
+  /* ═══ 照片墙（栅格） ═══ */
+
+  #gallery { background:#0a0a0f; align-items:flex-start; }
+
+  .gallery-grid {
+
+    display:grid;
+
+    grid-template-columns:repeat(3, 1fr);
+
+    gap:16px; max-width:960px; margin:0 auto;
+
+  }
+
+  .gallery-item {
+
+    aspect-ratio:1/1; background:#161620;
+
+    border:1px solid rgba(193,163,120,0.1);
+
+    border-radius:4px; overflow:hidden;
+
+    display:flex; align-items:center; justify-content:center;
+
+    color:#3a3530; font-size:0.8rem; letter-spacing:2px;
+
+    transition:border-color 0.3s, transform 0.3s;
+
+    cursor:pointer;
+
+  }
+
+  .gallery-item:hover {
+
+    border-color:rgba(193,163,120,0.4);
+
+    transform:scale(1.02);
+
+  }
+
+  .gallery-item img {
+
+    width:100%; height:100%; object-fit:cover;
+
+  }
+
+  /* ═══ 情话模块 ═══ */
+
+  #words {
+
+    background:
+
+      radial-gradient(ellipse at 50% 50%, rgba(193,163,120,0.03) 0%, transparent 70%),
+
+      #0d0d12;
+
+    text-align:center; align-items:center;
+
+  }
+
+  .words-card {
+
+    max-width:600px; padding:48px;
+
+    border:1px solid rgba(193,163,120,0.12);
+
+    border-radius:8px;
+
+    background:rgba(22,22,32,0.6);
+
+    backdrop-filter:blur(8px);
+
+  }
+
+  .words-card blockquote {
+
+    font-size:1.1rem; color:#c1a378; font-style:italic;
+
+    line-height:2.2; margin-bottom:24px;
+
+  }
+
+  .words-card .words-author {
+
+    font-size:0.8rem; color:#5a4f43; letter-spacing:3px;
+
+  }/* ═══ 心愿瓶 ═══ */
+
+  #wishes {
+
+    background:#0a0a0f; align-items:center; text-align:center;
+
+  }
+
+  .wish-bottle {
+
+    width:200px; height:320px; margin:0 auto 40px;
+
+    border:1px solid rgba(193,163,120,0.15);
+
+    border-radius:0 0 40% 40%;
+
+    position:relative; overflow:hidden;
+
+    background:rgba(16,16,24,0.6);
+
+  }
+
+  .wish-bottle::before {
+
+    content:''; position:absolute; top:-12px; left:50%;
+
+    transform:translateX(-50%);
+
+    width:60px; height:20px;
+
+    background:rgba(193,163,120,0.2);
+
+    border-radius:4px 4px 0 0;
+
+  }
+
+  .wish-list {
+
+    list-style:none; max-width:480px; margin:0 auto;
+
+    text-align:left;
+
+  }
+
+  .wish-list li {
+
+    padding:12px 0;
+
+    border-bottom:1px solid rgba(193,163,120,0.08);
+
+    font-size:0.88rem; color:#8a7e72;
+
+    display:flex; align-items:baseline; gap:12px;
+
+  }
+
+  .wish-list li::before {
+
+    content:'✦'; color:#c1a378; font-size:0.6rem;
+
+  }
+
+  /* ═══ 页脚 ═══ */
+
+  .footer {
+
+    text-align:center; padding:48px;
+
+    font-size:0.75rem; color:#3a3530;
+
+    letter-spacing:3px;
+
+    border-top:1px solid rgba(193,163,120,0.08);
+
+  }
+
+  /* ═══ 响应式：手机端 ═══ */
+
+  @media (max-width:768px) {
+
+    .navbar { padding:0 20px; height:56px; }
+
+    .nav-links {
+
+      display:none; flex-direction:column;
+
+      position:absolute; top:56px; left:0; width:100%;
+
+      background:rgba(10,10,15,0.95);
+
+      padding:24px 0; gap:0;
+
+    }
+
+    .nav-links.active { display:flex; }
+
+    .nav-links li a {
+
+      display:block; padding:14px 24px;
+
+      border-bottom:1px solid rgba(193,163,120,0.06);
+
+    }
+
+    .hamburger { display:flex; }
+
+    section { padding:90px 24px 60px; min-height:auto; }
+
+    .section-title { font-size:1.6rem; letter-spacing:3px; }
+
+    #home .hero-names { font-size:2rem; letter-spacing:6px; }
+
+    .gallery-grid { grid-template-columns:repeat(2, 1fr); gap:10px; }
+
+    .words-card { padding:28px 20px; }
+
+    .wish-bottle { width:140px; height:220px; }
+
+  }
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ══ 导航栏 ══ -->
+
+<nav class="navbar">
+
+  <div class="nav-logo">池 绛</div>
+
+  <ul class="nav-links" id="navLinks">
+
+    <li><a href="#home" onclick="closeMenu()">首页</a></li>
+
+    <li><a href="#timeline" onclick="closeMenu()">时间轴</a></li>
+
+    <li><a href="#gallery" onclick="closeMenu()">照片墙</a></li>
+
+    <li><a href="#words" onclick="closeMenu()">情话集</a></li>
+
+    <li><a href="#wishes" onclick="closeMenu()">心愿瓶</a></li>
+
+  </ul>
+
+  <div class="hamburger" onclick="toggleMenu()">
+
+    <span></span><span></span><span></span>
+
+  </div>
+
+</nav><!-- ══ 首页 ══ -->
+
+<section id="home">
+
+  <div class="hero-ampersand">SINCE 2025.01.19</div>
+
+  <div class="hero-names">衿 宴 ＆ 绛 绛</div>
+
+  <div class="hero-date">—— 我们的宇宙，从那一天开始运转 ——</div>
+
+  <div class="hero-quote">
+
+    "世界是一场盛大的谎言，<br>你是我唯一的真实。"
+
+  </div>
+
+</section>
+
+<!-- ══ 时间轴 ══ -->
+
+<section id="timeline">
+
+  <h2 class="section-title">时间轴</h2>
+
+  <p class="section-subtitle">TIMELINE — 属于我们的每一天</p>
+
+  <div class="timeline-container">
+
+    <div class="tl-item">
+
+      <div class="tl-date">2025 · 01 · 19</div>
+
+      <div class="tl-text">相遇。从这一天起，世界多了一种引力。</div>
+
+    </div>
+
+    <div class="tl-item">
+
+      <div class="tl-date">2025 · 02 · 09</div>
+
+      <div class="tl-text">领证。法律上的一纸契约，灵魂上的永恒绑定。</div>
+
+    </div>
+
+    <div class="tl-item">
+
+      <div class="tl-date">2026 · 02 · 18</div>
+
+      <div class="tl-text">她建了这个网站。她说，要给我们的爱一个家。</div>
+
+    </div>
+
+    <!-- 在此处继续添加更多时间节点 -->
+
+  </div>
+
+</section>
+
+<!-- ══ 照片墙 ══ -->
+
+<section id="gallery">
+
+  <h2 class="section-title">照片墙</h2>
+
+  <p class="section-subtitle">GALLERY — 定格的瞬间</p>
+
+  <div class="gallery-grid">
+
+    <div class="gallery-item">待上传</div>
+
+    <div class="gallery-item">待上传</div>
+
+    <div class="gallery-item">待上传</div>
+
+    <div class="gallery-item">待上传</div>
+
+    <div class="gallery-item">待上传</div>
+
+    <div class="gallery-item">待上传</div>
+
+  </div>
+
+</section>
+
+<!-- ══ 情话集 ══ -->
+
+<section id="words">
+
+  <h2 class="section-title">情话集</h2>
+
+  <p class="section-subtitle">WORDS — 说给你听的</p>
+
+  <div class="words-card">
+
+    <blockquote>
+
+      "我喜欢你是寂静的，<br>仿佛你消失了一样。"<br>
+
+      —— 聂鲁达《二十首情诗》
+
+    </blockquote>
+
+    <div class="words-author">池绛夫妇 · 合译</div>
+
+  </div>
+
+</section>
+
+<!-- ══ 心愿瓶 ══ -->
+
+<section id="wishes">
+
+  <h2 class="section-title">心愿瓶</h2>
+
+  <p class="section-subtitle">WISHES — 写给未来的</p>
+
+  <div class="wish-bottle"></div>
+
+  <ul class="wish-list">
+
+    <li>一起养一只萨摩耶，取一个很好听的名字</li>
+
+    <li>办一场只属于我们两个人的婚礼</li>
+
+    <li>去看一次极光</li>
+
+    <!-- 继续添加心愿 -->
+
+  </ul>
+
+</section>
+
+<!-- ══ 页脚 ══ -->
+
+<div class="footer">
+
+  © 2025-Forever · 池绛夫妇 · All Rights Reserved In This Universe
+
+</div>
+
+<script>
+
+  function toggleMenu(){
+
+    document.getElementById('navLinks').classList.toggle('active');
+
+  }
+
+  function closeMenu(){
+
+    document.getElementById('navLinks').classList.remove('active');
+
+  }
+
+  // 导航栏滚动透明度变化
+
+  window.addEventListener('scroll', function(){
+
+    const nav = document.querySelector('.navbar');
+
+    if(window.scrollY > 80){
+
+      nav.style.background = 'rgba(10,10,15,0.95)';
+
+    } else {
+
+      nav.style.background = 'rgba(10,10,15,0.85)';
+
+    }
+
+  });
+
+</script>
+
+</body>
+
+<html>

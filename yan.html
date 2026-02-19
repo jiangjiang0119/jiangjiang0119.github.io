@@ -445,6 +445,82 @@ html
     .wish-bottle { width:140px; height:220px; }
 
   }
+  /* 导航栏右侧操作区布局 */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 切换按钮样式 */
+#switchMode {
+  background: transparent;
+  border: 1px solid #c1a378;
+  color: #c1a378;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+#switchMode:hover {
+  background: rgba(193, 163, 120, 0.1);
+}
+
+/* 强制电脑版核心样式（覆盖手机端） */
+body.force-desktop .navbar {
+  padding: 0 48px !important;
+  height: 68px !important;
+}
+
+body.force-desktop .nav-links {
+  display: flex !important;
+  flex-direction: row !important;
+  position: static !important;
+  background: none !important;
+  padding: 0 !important;
+  gap: 36px !important;
+}
+
+body.force-desktop .nav-links li a {
+  padding: 0 !important;
+  border-bottom: none !important;
+  font-size: 0.85rem !important;
+}
+
+body.force-desktop .hamburger {
+  display: none !important;
+}
+
+body.force-desktop section {
+  padding: 120px 80px 80px !important;
+  min-height: 100vh !important;
+}
+
+body.force-desktop .section-title {
+  font-size: 2.4rem !important;
+  letter-spacing: 6px !important;
+}
+
+body.force-desktop #home .hero-names {
+  font-size: 3.6rem !important;
+  letter-spacing: 12px !important;
+}
+
+body.force-desktop .gallery-grid {
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 16px !important;
+}
+
+body.force-desktop .words-card {
+  padding: 48px !important;
+}
+
+body.force-desktop .wish-bottle {
+  width: 200px !important;
+  height: 320px !important;
+}
 
 </style>
 
@@ -455,29 +531,20 @@ html
 <!-- ══ 导航栏 ══ -->
 
 <nav class="navbar">
-
   <div class="nav-logo">池 绛</div>
-
   <ul class="nav-links" id="navLinks">
-
     <li><a href="#home" onclick="closeMenu()">首页</a></li>
-
     <li><a href="#timeline" onclick="closeMenu()">时间轴</a></li>
-
     <li><a href="#gallery" onclick="closeMenu()">照片墙</a></li>
-
     <li><a href="#words" onclick="closeMenu()">情话集</a></li>
-
     <li><a href="#wishes" onclick="closeMenu()">心愿瓶</a></li>
-
   </ul>
-
-  <div class="hamburger" onclick="toggleMenu()">
-
-    <span></span><span></span><span></span>
-
+  <div class="nav-actions">
+    <button id="switchMode" onclick="toggleMode()">电脑版</button>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
   </div>
-
 </nav>
   <!-- ══ 首页 ══ -->
 
@@ -650,7 +717,17 @@ html
     }
 
   });
-
+function toggleMode() {
+  const body = document.body;
+  const switchBtn = document.getElementById('switchMode');
+  if (body.classList.contains('force-desktop')) {
+    body.classList.remove('force-desktop');
+    switchBtn.textContent = '电脑版';
+  } else {
+    body.classList.add('force-desktop');
+    switchBtn.textContent = '手机版';
+  }
+}
 </script>
 
 </body>

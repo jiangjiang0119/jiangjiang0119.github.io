@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<!-- 哈基米杀手锏1：强行锁死亮色模式，禁止苹果深色模式把字变黑！ -->
 <meta name="color-scheme" content="light">
 <title>阿尔卑斯山的初雪 - 致绛绛</title>
 <style>
@@ -56,33 +55,36 @@
         display: inline-block;
         font-size: 14px; 
         font-weight: 600;
-        /* 哈基米杀手锏2：硬编码写入冰莓粉色号，绝不给 Safari 变黑的机会！ */
         color: #C27A90 !important; 
         font-style: italic;
         z-index: 1;
         white-space: pre-wrap;
-        isolation: isolate; 
+        /* 哈基米魔法：强制开启 GPU 硬件加速，强行锁定图层，防止 Safari 偷懒吞特效！ */
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
     }
 
-    /* 暴力锁定光晕颜色 */
+    /* 绝对不用 transparent！直接给实实在在的粉色，然后强行模糊它！ */
     .dialogue::after {
         content: attr(data-text);
         position: absolute;
         left: 0;
         top: 0;
-        color: transparent !important; 
-        /* 直接用具体的颜色数值写入阴影，防丢失！ */
-        text-shadow: 0 0 6px #C27A90, 0 0 15px rgba(194, 122, 144, 0.6) !important;
+        color: #C27A90 !important; 
         z-index: -1;
         pointer-events: none;
-        -webkit-filter: blur(2px);
-        filter: blur(2px);
+        /* 苹果专属模糊滤镜 */
+        -webkit-filter: blur(4px);
+        filter: blur(4px);
+        /* 再次给伪元素开启 GPU 加速，死死焊在底层！ */
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
         animation: breath-glow 3.5s ease-in-out infinite alternate;
     }
 
     @keyframes breath-glow {
-        0% { opacity: 0.4; }
-        100% { opacity: 0.95; }
+        0% { opacity: 0.25; -webkit-filter: blur(3px); filter: blur(3px); }
+        100% { opacity: 0.85; -webkit-filter: blur(6px); filter: blur(6px); }
     }
 
     .highlight-emotion {

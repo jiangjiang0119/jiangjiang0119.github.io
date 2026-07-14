@@ -2,36 +2,33 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<!-- 手机端适配代码，保证1:1渲染不缩放 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="color-scheme" content="light">
 <title>阿尔卑斯山的初雪 - 致绛绛</title>
 <style>
-    /* 引入思源宋体，增加清冷文艺感 */
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap');
 
     :root {
-        --ice-berry-bg: #FCF6F8; /* 极淡的冰莓粉背景 */
-        --ice-berry-text: #59464E; /* 清冷的深灰粉字色 */
-        --ice-berry-highlight: #C27A90; /* 纯正的冰莓粉 */
-        --ice-berry-glow: rgba(194, 122, 144, 0.5); /* 晕染光晕色 */
+        --ice-berry-bg: #FCF6F8; 
+        --ice-berry-text: #59464E; 
     }
 
     body {
-        background-color: var(--ice-berry-bg);
+        background-color: var(--ice-berry-bg) !important;
         color: var(--ice-berry-text);
         font-family: 'Noto Serif SC', 'Songti SC', serif;
         margin: 0;
-        /* 边距调小，让手机上一行能多看些字 */
         padding: 15px 12px; 
         display: flex;
         justify-content: center;
         overflow-x: hidden;
+        -webkit-font-smoothing: antialiased; 
     }
 
     .chi-diary-container {
         width: 100%;
         max-width: 1200px;
-        line-height: 1.9; /* 舒适的阅读行高 */
+        line-height: 1.9;
         letter-spacing: 1.2px;
         text-align: justify;
         text-justify: inter-ideograph;
@@ -39,7 +36,6 @@
         padding: 10px 5px;
     }
 
-    /* 旁白文字：精准设置为绛绛要求的13px */
     p.narration {
         font-size: 13px; 
         font-weight: 300;
@@ -47,7 +43,6 @@
         color: #6A5B61;
     }
 
-    /* 台词容器区域 */
     .dialogue-wrapper {
         display: block;
         margin: 20px 0;
@@ -55,44 +50,57 @@
         border-left: 2px solid rgba(194, 122, 144, 0.4);
     }
 
-    /* 台词本体：精准设置为绛绛要求的14px，字重加大一点以作区分 */
     .dialogue {
         position: relative;
         display: inline-block;
         font-size: 14px; 
         font-weight: 600;
-        color: var(--ice-berry-highlight);
+        color: #C27A90 !important; 
         font-style: italic;
         z-index: 1;
         white-space: pre-wrap;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
     }
 
-    /* 核心渲染：干干净净的纯粉色光晕，绝对没有白色脏层 */
+    /* 强化版光晕伪元素 */
     .dialogue::after {
         content: attr(data-text);
         position: absolute;
         left: 0;
         top: 0;
-        color: transparent; 
-        text-shadow: 0 0 6px var(--ice-berry-highlight), 0 0 15px var(--ice-berry-glow);
+        color: #C27A90 !important; 
         z-index: -1;
         pointer-events: none;
-        animation: breath-glow 3.5s ease-in-out infinite alternate;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        /* 把呼吸的时间稍微调快一丢丢，让律动感更强 (3s) */
+        animation: breath-glow 3s ease-in-out infinite alternate;
     }
 
-    /* 纯净的呼吸晕染动画 */
+    /* 哈基米加强版呼吸律动：透明度拉满，叠加外发光！ */
     @keyframes breath-glow {
-        0% { opacity: 0.5; filter: blur(1px); }
-        100% { opacity: 0.95; filter: blur(3px); }
+        0% { 
+            opacity: 0.3; 
+            -webkit-filter: blur(2px); 
+            filter: blur(2px); 
+            text-shadow: none;
+        }
+        100% { 
+            opacity: 1; /* 透明度拉到最高，完全显现 */
+            -webkit-filter: blur(6px); 
+            filter: blur(6px); /* 模糊范围扩大 */
+            /* 叠加双层强力外发光，让冰莓粉彻底亮起来！ */
+            text-shadow: 0 0 10px rgba(194, 122, 144, 0.9), 0 0 20px rgba(194, 122, 144, 0.6);
+        }
     }
 
-    /* 特殊的情感强调句 */
     .highlight-emotion {
         background: linear-gradient(120deg, transparent 0%, rgba(194, 122, 144, 0.15) 50%, transparent 100%);
         background-size: 200% 100%;
         animation: gradient-slide 5s linear infinite;
         padding: 0 3px;
-        color: #9C576F;
+        color: #9C576F !important;
         font-weight: 600;
     }
 

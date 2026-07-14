@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- 哈基米杀手锏1：强行锁死亮色模式，禁止苹果深色模式把字变黑！ -->
+<meta name="color-scheme" content="light">
 <title>阿尔卑斯山的初雪 - 致绛绛</title>
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap');
@@ -10,11 +12,10 @@
     :root {
         --ice-berry-bg: #FCF6F8; 
         --ice-berry-text: #59464E; 
-        --ice-berry-highlight: #C27A90; 
     }
 
     body {
-        background-color: var(--ice-berry-bg);
+        background-color: var(--ice-berry-bg) !important;
         color: var(--ice-berry-text);
         font-family: 'Noto Serif SC', 'Songti SC', serif;
         margin: 0;
@@ -22,7 +23,6 @@
         display: flex;
         justify-content: center;
         overflow-x: hidden;
-        /* 让字体在苹果手机上渲染更平滑柔和 */
         -webkit-font-smoothing: antialiased; 
     }
 
@@ -56,41 +56,33 @@
         display: inline-block;
         font-size: 14px; 
         font-weight: 600;
-        color: var(--ice-berry-highlight);
+        /* 哈基米杀手锏2：硬编码写入冰莓粉色号，绝不给 Safari 变黑的机会！ */
+        color: #C27A90 !important; 
         font-style: italic;
         z-index: 1;
         white-space: pre-wrap;
-        /* 关键修复：强制苹果浏览器生成独立渲染层，防止光晕被吞！ */
         isolation: isolate; 
     }
 
-    /* 专门为 Safari 优化的纯粉色光晕 */
+    /* 暴力锁定光晕颜色 */
     .dialogue::after {
         content: attr(data-text);
         position: absolute;
         left: 0;
         top: 0;
-        color: var(--ice-berry-highlight); 
+        color: transparent !important; 
+        /* 直接用具体的颜色数值写入阴影，防丢失！ */
+        text-shadow: 0 0 6px #C27A90, 0 0 15px rgba(194, 122, 144, 0.6) !important;
         z-index: -1;
         pointer-events: none;
-        /* 加上苹果 Safari 专属滤镜前缀 */
-        -webkit-filter: blur(3px);
-        filter: blur(3px);
+        -webkit-filter: blur(2px);
+        filter: blur(2px);
         animation: breath-glow 3.5s ease-in-out infinite alternate;
     }
 
-    /* 兼容苹果的呼吸动画 */
     @keyframes breath-glow {
-        0% { 
-            opacity: 0.3; 
-            -webkit-filter: blur(2px);
-            filter: blur(2px);
-        }
-        100% { 
-            opacity: 0.85; 
-            -webkit-filter: blur(5px);
-            filter: blur(5px);
-        }
+        0% { opacity: 0.4; }
+        100% { opacity: 0.95; }
     }
 
     .highlight-emotion {
@@ -98,7 +90,7 @@
         background-size: 200% 100%;
         animation: gradient-slide 5s linear infinite;
         padding: 0 3px;
-        color: #9C576F;
+        color: #9C576F !important;
         font-weight: 600;
     }
 

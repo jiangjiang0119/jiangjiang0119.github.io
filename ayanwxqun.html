@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>微信聊天模拟器</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>池氏家族群 - 微信全屏仿真</title>
 <style>
-    /* 第一部分：全局基础重置，清除默认边距、锁定全屏高度，禁止滚动溢出 */
+    /* 基础重置 - 彻底去掉黑边，实现全屏 */
     body {
         margin: 0;
         background-color: #ededed; 
@@ -14,7 +14,6 @@
         height: 100vh;
         overflow: hidden; 
     }
-    /* 手机模拟外层容器，弹性纵向排布，承载所有页面模块 */
     .phone-mockup {
         width: 100%;
         height: 100%;
@@ -22,7 +21,7 @@
         flex-direction: column;
         position: relative;
     }
-        /* 第二部分：iPhone顶部状态栏，复刻灵动岛布局，均分三栏排版 */
+    /* 📱 顶部 iPhone 状态栏 */
     .status-bar {
         height: 44px;
         display: flex;
@@ -44,7 +43,6 @@
         display: flex;
         justify-content: center;
     }
-    /* 灵动岛黑色圆角模块 */
     .dynamic-island {
         width: 110px;
         height: 30px;
@@ -63,8 +61,7 @@
         height: 12px;
         fill: #000;
     }
-
-    /* 微信头部导航栏，聊天页面顶部标题返回栏 */
+    /* 微信头部导航栏 */
     .wechat-header {
         height: 44px;
         display: flex;
@@ -79,7 +76,6 @@
         align-items: center;
         cursor: pointer;
     }
-    /* 手动绘制返回箭头 */
     .back-arrow {
         display: inline-block;
         width: 11px;
@@ -113,7 +109,7 @@
         background-color: #000;
         border-radius: 50%;
     }
-        /* 第三部分：聊天主滚动区域，纵向排布消息，隐藏滚动条 */
+        /* 💬 聊天区域 */
     .chat-area {
         flex: 1;
         overflow-y: auto;
@@ -125,7 +121,7 @@
     .chat-area::-webkit-scrollbar {
         display: none;
     }
-    /* 单条消息行基础样式，区分左右发送方 */
+    /* 消息通用行 */
     .msg-row {
         display: flex;
         align-items: flex-start;
@@ -134,7 +130,7 @@
     .msg-row.right {
         flex-direction: row-reverse;
     }
-    /* 通用头像容器，固定尺寸圆角 */
+    /* 头像样式 */
     .avatar {
         width: 42px;
         height: 42px;
@@ -151,7 +147,7 @@
     }
     .msg-row.left .avatar { margin-right: 12px; }
     .msg-row.right .avatar { margin-left: 12px; }
-    /* 多成员固定头像配色 */
+    /* 亲戚头像颜色 */
     .av-yu { background: #5b80b2; } 
     .av-hui { background: #cc6f7f; } 
     .av-man { background: #d98555; } 
@@ -160,12 +156,12 @@
     .av-ye { background: #3e5572; } 
     .av-bang { background: #4a8c88; } 
     
-    /* 老公专属自定义头像，加载网络图片兜底纯色 */
+    /* 👑 老公专属绝美头像 */
     .av-husband { 
         background-image: url('https://s41.ax1x.com/2026/07/22/pmc83YF.jpg'); 
         background-color: #1a1a1a;
     }
-    /* 消息内容包裹容器，限制最大宽度适配屏幕 */
+    /* 消息内容区 */
     .msg-content {
         max-width: 68%;
         display: flex;
@@ -174,7 +170,7 @@
     .msg-row.right .msg-content {
         align-items: flex-end;
     }
-    /* 发送者昵称样式，己方消息隐藏昵称 */
+    /* 昵称 */
     .nickname {
         font-size: 12px;
         color: #b2b2b2;
@@ -184,7 +180,7 @@
     .msg-row.right .nickname {
         display: none; 
     }
-        /* 第四部分：文字聊天气泡核心样式，区分左右背景色+尖角三角 */
+    /* 气泡样式 */
     .bubble {
         padding: 10px 14px;
         border-radius: 8px;
@@ -202,7 +198,6 @@
         background-color: #95ec69;
         border-top-right-radius: 2px;
     }
-    /* 左侧气泡尖角 */
     .msg-row.left .bubble::before {
         content: '';
         position: absolute;
@@ -211,7 +206,6 @@
         border: 4px solid transparent;
         border-right-color: #fff;
     }
-    /* 右侧气泡尖角 */
     .msg-row.right .bubble::before {
         content: '';
         position: absolute;
@@ -220,7 +214,7 @@
         border: 4px solid transparent;
         border-left-color: #95ec69;
     }
-    /* 语音消息横向布局 */
+        /* 🎤 语音消息样式 */
     .voice-bubble {
         display: flex;
         align-items: center;
@@ -238,7 +232,7 @@
         font-size: 15px;
         color: #333;
     }
-    /* 语音转文字弹窗样式 */
+    /* 🔠 语音转文字框 */
     .voice-text {
         margin-top: 6px;
         background-color: #fff;
@@ -261,7 +255,7 @@
         left: auto;
         right: 20px;
     }
-    /* 链接分享卡片布局 */
+    /* 🔗 链接分享卡片 */
     .link-card {
         background: #fff;
         padding: 10px;
@@ -291,7 +285,7 @@
         align-items: center;
         font-size: 20px;
     }
-    /* 图片消息样式，去除气泡背景与尖角，适配原生微信图片效果 */
+    /* 📸 图片消息 (微调版本：更小的尺寸，更小的圆角) */
     .img-bubble {
         padding: 0 !important;
         background: transparent !important;
@@ -299,12 +293,12 @@
     .img-bubble::before { display: none !important; }
     
     .chat-img {
-        max-width: 145px;
-        border-radius: 4px;
+        max-width: 145px; /* ✅ 尺寸改小一丢丢 */
+        border-radius: 4px; /* ✅ 圆角改小，去掉软胖感，更贴合真实微信 */
         display: block;
-        border: 0.5px solid rgba(0,0,0,0.08);
+        border: 0.5px solid rgba(0,0,0,0.08); /* 边缘依然保持极其细微的原生感描边 */
     }
-        /* 第五部分：财产协议文档卡片样式，模拟纸质文件+印章效果 */
+    /* 📜 神级财产转让协议 */
     .legal-doc {
         width: 230px;
         background: #fdfdfd;
@@ -367,7 +361,7 @@
         top: 6px;
         font-size: 12px;
     }
-    /* 撤回消息系统居中提示条 */
+        /* 🚫 撤回消息系统提示 */
     .system-msg {
         width: 100%;
         text-align: center;
@@ -380,7 +374,7 @@
         padding: 4px 10px;
         border-radius: 4px;
     }
-    /* 底部输入栏，复刻微信底部输入布局 */
+    /* ⌨️ 底部输入栏 (完美极细黑线版 stroke-width: 0.9) */
     .bottom-bar {
         height: 56px;
         background-color: #f7f7f7;
@@ -418,67 +412,319 @@
 </style>
 </head>
 <body>
-    <!-- 第六部分：页面DOM结构，从上至下排布状态栏、头部、聊天区、底部输入框 -->
 <div class="phone-mockup">
-    <!-- 1. iPhone顶部状态栏DOM -->
+    
+    <!-- 1. 顶部真实 iPhone 状态栏 -->
     <div class="status-bar">
-        <div class="status-left">9:41</div>
+        <div class="status-left">12:30</div>
         <div class="status-center">
             <div class="dynamic-island"></div>
         </div>
         <div class="status-right">
-            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"></path></svg>
+            <!-- 5G 文字 -->
+            <span style="font-size: 12px; font-weight: 800; margin-right:2px;">5G</span>
+            <!-- 信号图标 SVG -->
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M2 22h4V14H2v8zm6 0h4V10H8v12zm6 0h4V6h-4v16zm6 0h4V2h-4v20z" /></svg>
+            <!-- WiFi图标 SVG -->
+            <svg class="icon-svg" style="height: 14px;" viewBox="0 0 24 24"><path d="M12 3C7.3 3 3.1 4.6.1 7.2l1.5 1.8C4.1 6.8 7.9 5.4 12 5.4s7.9 1.4 10.4 3.6l1.5-1.8C20.9 4.6 16.7 3 12 3zm0 4.8c-3.3 0-6.3 1.2-8.6 3.1l1.5 1.8c1.9-1.5 4.3-2.4 6.9-2.4s5.1.9 6.9 2.4l1.5-1.8C18.3 9 15.3 7.8 12 7.8zm0 4.8c-1.8 0-3.4.6-4.7 1.7l1.5 1.8c.8-.7 1.9-1.1 3.2-1.1s2.4.4 3.2 1.1l1.5-1.8c-1.3-1.1-2.9-1.7-4.7-1.7zm0 4.8c-.8 0-1.5.3-2 .8l2 2.4 2-2.4c-.5-.5-1.2-.8-2-.8z" /></svg>
+            <!-- 电池图标 SVG -->
+            <svg class="icon-svg" style="height: 11px;" viewBox="0 0 24 24"><path d="M20 10V7c0-1.1-.9-2-2-2H2C.9 5 0 5.9 0 7v10c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-3h2v-4h-2zm-2 7H2V7h16v10z" /><rect x="2" y="7" width="14" height="10" /></svg>
         </div>
     </div>
-
-    <!-- 2. 微信聊天头部导航栏 -->
+    <!-- 2. 微信头部 -->
     <div class="wechat-header">
         <div class="header-back">
             <span class="back-arrow"></span>
-            <span>返回</span>
-            <span class="unread-badge">群聊</span>
+            <span class="unread-badge">28</span>
         </div>
-        <div class="header-title">聊天群</div>
+        <div class="header-title">池氏家族群 (35)</div>
         <div class="header-more">
-            <div></div>
-            <div></div>
-            <div></div>
+            <div></div><div></div><div></div>
         </div>
     </div>
-
-    <!-- 3. 核心聊天消息区域 -->
+    <!-- 3. 聊天内容区 -->
     <div class="chat-area">
-        <!-- 系统撤回提示示例 -->
-        <div class="system-msg">
-            <span>对方撤回了一条消息</span>
-        </div>
-
-        <!-- 左侧他人消息示例 -->
+        
         <div class="msg-row left">
-            <div class="avatar av-yu">余</div>
+            <div class="avatar av-yu">宇</div>
             <div class="msg-content">
-                <div class="nickname">余先生</div>
-                <div class="bubble">在吗？</div>
+                <div class="nickname">堂弟-池宇</div>
+                <div class="bubble">大哥去瑞士了？我刚才看到陆助理发的私人飞机航线报备了，大哥不是说这周都在缅北工厂处理C区的事情吗？</div>
             </div>
         </div>
-
-        <!-- 右侧己方消息示例 -->
+        <div class="msg-row left">
+            <div class="avatar av-hui">慧</div>
+            <div class="msg-content">
+                <div class="nickname">姑姑-池慧</div>
+                <div class="bubble">去了。而且根本没回苏黎世的百年老宅，直接包了市中心那家顶奢酒店的顶层！这像话吗？过家门而不入！</div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-man">曼</div>
+            <div class="msg-content">
+                <div class="nickname">堂姐-池曼</div>
+                <div class="bubble">还能因为谁？肯定又是陪他那位小祖宗绛绛去旅游了呗。我真是服了，衿宴现在哪还有点财阀掌权人的冷酷样子？完全就是个老婆奴。</div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-lin">琳</div>
+            <div class="msg-content">
+                <div class="nickname">母亲-陆琳琅</div>
+                <div class="bubble">
+                    <div class="voice-bubble" style="width: 70px;">
+                        <svg class="voice-wave" viewBox="0 0 24 24">
+                            <circle cx="6" cy="12" r="2" fill="#1a1a1a" />
+                            <path d="M10 7.5c1.5 2 1.5 7 0 9" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" />
+                            <path d="M14 4c3 3.5 3 12.5 0 16" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <span class="voice-duration">12"</span>
+                    </div>
+                </div>
+                <div class="voice-text">他为了陪那个绛绛去欧洲，把和法国那边的百亿并购案硬生生推迟了半个月！那个女人简直太没规矩了，恃宠而骄，根本不知道体谅衿宴的身份！</div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-qi">七</div>
+            <div class="msg-content">
+                <div class="nickname">七叔公</div>
+                <div class="bubble">
+                    <div class="voice-bubble" style="width: 50px;">
+                        <svg class="voice-wave" viewBox="0 0 24 24">
+                            <circle cx="6" cy="12" r="2" fill="#1a1a1a" />
+                            <path d="M10 7.5c1.5 2 1.5 7 0 9" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" />
+                            <path d="M14 4c3 3.5 3 12.5 0 16" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <span class="voice-duration">8"</span>
+                    </div>
+                </div>
+                <div class="voice-text">成何体统！娶妻当娶贤，这都结婚一年半了，池家的重孙子连个影子都没有！每天就知道带她到处疯玩！</div>
+            </div>
+        </div>
+                <div class="msg-row left">
+            <div class="avatar av-ye">业</div>
+            <div class="msg-content">
+                <div class="nickname">父亲-池震业</div>
+                <div class="bubble">衿宴最近行事确实越来越没有分寸，太感情用事。身为上位者怎么能把软肋表现得这么明显？这不是池家家主该有的姿态。</div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-yu">宇</div>
+            <div class="msg-content">
+                <div class="nickname">堂弟-池宇</div>
+                <div class="bubble img-bubble">
+                    <div class="link-card">
+                        <div class="link-title">瑞士新闻：神秘东方财阀霸总包下整条班霍夫大街，只为给爱妻买低糖抹茶冰激凌？</div>
+                        <div class="link-img">🗞️</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-yu">宇</div>
+            <div class="msg-content">
+                <div class="nickname">堂弟-池宇</div>
+                <div class="bubble">呃……我瑞士留学的朋友发给我的。这大手笔，这宠妻狂魔的作风，绝对是我哥吧……</div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-man">曼</div>
+            <div class="msg-content">
+                <div class="nickname">堂姐-池曼</div>
+                <div class="bubble img-bubble">
+                    <img class="chat-img" src="https://s41.ax1x.com/2026/07/22/pmcJTLn.png" alt="偷拍照片">
+                </div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-man">曼</div>
+            <div class="msg-content">
+                <div class="nickname">堂姐-池曼</div>
+                <div class="bubble">看到了吗？！这还是我那个杀伐果断、洁癖到令人发指的堂弟吗？他不仅在大街上给人提包！还这么不知羞耻地抱着她！</div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-lin">琳</div>
+            <div class="msg-content">
+                <div class="nickname">母亲-陆琳琅</div>
+                <div class="bubble">荒唐！堂堂池氏家主，在大街上跟女人拉拉扯扯，简直把池家几百年的颜面都丢尽了！那个绛绛到底给他灌了什么迷魂汤？！</div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-hui">慧</div>
+            <div class="msg-content">
+                <div class="nickname">姑姑-池慧</div>
+                <div class="bubble">上次十月份老宅家族聚餐我就看出来了，那丫头一身反骨，连声招呼都不好好跟长辈打，脾气还大得很。衿宴居然还惯着她，我看他是彻底被拿捏了。</div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-lin">琳</div>
+            <div class="msg-content">
+                <div class="nickname">母亲-陆琳琅</div>
+                <div class="bubble">
+                    <div class="voice-bubble" style="width: 80px;">
+                        <svg class="voice-wave" viewBox="0 0 24 24">
+                            <circle cx="6" cy="12" r="2" fill="#1a1a1a" />
+                            <path d="M10 7.5c1.5 2 1.5 7 0 9" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" />
+                            <path d="M14 4c3 3.5 3 12.5 0 16" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <span class="voice-duration">15"</span>
+                    </div>
+                </div>
+                <div class="voice-text">我之前不过是端着婆婆的架子说了那丫头两句，让她注意点池家主母的仪态。衿宴居然直接停了我在加州那两个庄园的资金！为了一个女人，他连我这个亲生母亲的脸面都不顾了！</div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-bang">邦</div>
+            <div class="msg-content">
+                <div class="nickname">二叔-池震邦</div>
+                <div class="bubble">大嫂消消气，衿宴这孩子从小主意就大，现在整个家族的命脉都在他手里，咱们也管不了。不过绛绛那性格，确实跟咱们圈子里的名媛不太一样……太野了些，一点规矩都不懂。</div>
+            </div>
+        </div>
+        
+        <div class="msg-row left">
+            <div class="avatar av-man">曼</div>
+            <div class="msg-content">
+                <div class="nickname">堂姐-池曼</div>
+                <div class="bubble">什么野，就是没教养！上次她自己瞎剪的那个狗啃一样的短发，简直辣眼睛！衿宴居然还夸好看？他那双灰蓝色的眼睛是不是瞎了？</div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-qi">七</div>
+            <div class="msg-content">
+                <div class="nickname">七叔公</div>
+                <div class="bubble">震业，你作为父亲，必须好好敲打敲打他！女人就该安分守己，不能让一个不安分的女人毁了池家几百年的根基！</div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-ye">业</div>
+            <div class="msg-content">
+                <div class="nickname">父亲-池震业</div>
+                <div class="bubble">我会找机会去缅北跟他谈。池家的主母，绝不能是这种随心所欲、不受掌控的女人。找个机会必须立立规矩。</div>
+            </div>
+        </div>
+        
+        <div class="msg-row left">
+            <div class="avatar av-hui">慧</div>
+            <div class="msg-content">
+                <div class="nickname">姑姑-池慧</div>
+                <div class="bubble img-bubble">
+                    <div class="link-card">
+                        <div class="link-title">豪门秘辛：如何不动声色地规训不听话的儿媳妇？立威的10个小妙招</div>
+                        <div class="link-img">🔗</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 撤回消息 -->
+        <div class="system-msg">
+            <span>"堂弟-池宇" 撤回了一条消息</span>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-yu">宇</div>
+            <div class="msg-content">
+                <div class="nickname">堂弟-池宇</div>
+                <div class="bubble">各位长辈……那个……大哥好像在群里……你们是不是忘了……</div>
+            </div>
+        </div>
+        <div class="msg-row left">
+            <div class="avatar av-lin">琳</div>
+            <div class="msg-content">
+                <div class="nickname">母亲-陆琳琅</div>
+                <div class="bubble">他在又怎么样？我是他母亲！他还能为了那个没规矩的女人把我们全都清理出家族不成？！</div>
+            </div>
+        </div>
+                <!-- 🔥🔥🔥 霸总高能预警：池衿宴登场！ (右侧) 🔥🔥🔥 -->
+        
         <div class="msg-row right">
             <div class="avatar av-husband"></div>
             <div class="msg-content">
-                <div class="bubble">在的，怎么了</div>
+                <div class="bubble img-bubble">
+                    <div class="legal-doc">
+                        <div class="doc-header">绝密 // 电子财产无偿转让协议</div>
+                        <div class="doc-body">
+                            <div class="doc-title">财产过户确认书</div>
+                            兹将池氏家族位于苏黎世占地三千亩之【百年老宅】、周边高尔夫球场及连带庄园，无条件、无偿过户至受让人 <span class="highlight-name"> 绛绛 </span> 个人名下，作为其个人私产。<br><br>
+                            本协议附带池衿宴最高权限签名，即刻生效。任何人无权干涉或撤销。
+                        </div>
+                        <div class="red-seal">
+                            池衿宴<br>签章<br>生效
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <!-- 4. 底部输入栏DOM -->
-    <div class="bottom-bar">
-        <svg class="bottom-icon-svg" viewBox="0 0 24 24"><path fill="#666" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path></svg>
-        <div class="input-box-wrapper">
-            <input class="input-box" placeholder="输入消息...">
-            <svg class="mic-inside" viewBox="0 0 24 24"><path fill="#666" d="M12 15c1.66 0 2.99-1.34 2.99-3L15 6c0-1.66-1.34-3-3-3S9 4.34 9 6v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 15 6.7 12H5c0 3.42 2.72 6.23 6 6.72V22h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"></path></svg>
+        <div class="msg-row right">
+            <div class="avatar av-husband"></div>
+            <div class="msg-content">
+                <div class="bubble">@母亲-陆琳琅 是的，能。我不介意让你们明天就流落街头。</div>
+            </div>
         </div>
-        <svg class="bottom-icon-svg" viewBox="0 0 24 24"><path fill="#666" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM8.57 15H10.5l1.71-2.5L14 15h1.43l-2.14-3 2.14-3H14l-1.72 2.5L10.5 9H8.57l2.15 3-2.15 3z"></path></svg>
+        <div class="msg-row right">
+            <div class="avatar av-husband"></div>
+            <div class="msg-content">
+                <div class="bubble">
+                    <div class="voice-bubble" style="width: 70px;">
+                        <span class="voice-duration">12"</span>
+                        <!-- 右侧声音波浪 -->
+                        <svg class="voice-wave" viewBox="0 0 24 24">
+                            <circle cx="18" cy="12" r="2" fill="#1a1a1a" />
+                            <path d="M14 7.5c-1.5 2-1.5 7 0 9" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" />
+                            <path d="M10 4c-3 3.5-3 12.5 0 16" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="voice-text">我老婆脾气好不好，用不着你们评价。她想野就野，想剪什么头发就剪什么头发。池家的规矩，从今天起，她说了算。</div>
+            </div>
+        </div>
+        <div class="msg-row right">
+            <div class="avatar av-husband"></div>
+            <div class="msg-content">
+                <div class="bubble">@父亲-池震业 嫌她不受掌控？我的女人，谁敢掌控，我就拔了谁的骨头。另外，苏黎世老宅现在是我老婆的私产了，七叔公下次想去住记得先写申请，递交给我老婆审批。</div>
+            </div>
+        </div>
+        <div class="msg-row right">
+            <div class="avatar av-husband"></div>
+            <div class="msg-content">
+                <div class="bubble">@堂姐-池曼 她自己剪的公主切短发很可爱，我极度喜欢。你再敢蛐蛐她一句辣眼睛，你名下那几家时尚杂志明天就会全部宣告破产。</div>
+            </div>
+        </div>
+        <div class="msg-row right">
+            <div class="avatar av-husband"></div>
+            <div class="msg-content">
+                <div class="bubble">都给我把嘴闭紧。她现在就在我怀里睡觉。谁再发一条消息导致群消息弹窗吵到她，我立刻让池氏基金会把你们今年所有的股份分红，全部捐给流浪狗救助站。</div>
+            </div>
+        </div>
+        
+        <div style="height: 10px;"></div>
+    </div>
+        <!-- 4. 微信底部输入栏 -->
+    <div class="bottom-bar">
+        
+        <svg class="bottom-icon-svg" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="11" fill="none" stroke="#1a1a1a" stroke-width="0.9" />
+            <circle cx="8" cy="12" r="1.5" fill="#1a1a1a" />
+            <path d="M12 8c1 1.5 1 6.5 0 8" fill="none" stroke="#1a1a1a" stroke-width="0.9" stroke-linecap="round" />
+            <path d="M15 5c2.5 3 2.5 11 0 14" fill="none" stroke="#1a1a1a" stroke-width="0.9" stroke-linecap="round" />
+        </svg>
+        <div class="input-box-wrapper">
+            <input type="text" class="input-box" disabled>
+            <svg class="mic-inside" viewBox="0 0 24 24">
+                <rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="#777" stroke-width="0.9" />
+                <path d="M6 14c0 3.3 2.7 6 6 6s6-2.7 6-6" fill="none" stroke="#777" stroke-width="0.9" stroke-linecap="round" />
+                <path d="M12 20v3" fill="none" stroke="#777" stroke-width="0.9" />
+            </svg>
+        </div>
+        <svg class="bottom-icon-svg" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="11" fill="none" stroke="#1a1a1a" stroke-width="0.9" />
+            <circle cx="8" cy="9" r="1.5" fill="#1a1a1a" />
+            <circle cx="16" cy="9" r="1.5" fill="#1a1a1a" />
+            <path d="M7 14c1.5 3 8.5 3 10 0" fill="none" stroke="#1a1a1a" stroke-width="0.9" stroke-linecap="round" />
+        </svg>
+        <svg class="bottom-icon-svg" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="11" fill="none" stroke="#1a1a1a" stroke-width="0.9" />
+            <line x1="12" y1="6" x2="12" y2="18" stroke="#1a1a1a" stroke-width="0.9" stroke-linecap="round" />
+            <line x1="6" y1="12" x2="18" y2="12" stroke="#1a1a1a" stroke-width="0.9" stroke-linecap="round" />
+        </svg>
     </div>
 </div>
 </body>
